@@ -1,0 +1,16 @@
+import itertools
+
+# Function to generate permutations of words
+def generate_word_permutations(word_list):
+    permutations = list(itertools.permutations(word_list))
+    return [' '.join(p) for p in permutations]
+
+# Main execution
+if __name__ == "__main__":
+    # Example dictionary (list of words)
+    dictionary = ['apple', 'banana', 'cherry']
+    
+    # Generate and print permutations
+    mixed_words = generate_word_permutations(dictionary)
+    for mixed in mixed_words:
+        print(mixed)
