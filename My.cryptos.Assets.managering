@@ -1,0 +1,35 @@
+import requests
+
+# Function to get the current price of a cryptocurrency
+def get_crypto_price(crypto_symbol):
+    url = f'https://api.coingecko.com/api/v3/simple/price?ids={crypto_symbol}&vs_currencies=usd'
+    response = requests.get(url)
+    data = response.json()
+    return data[crypto_symbol]['usd']
+
+# Function to calculate the value of a portfolio
+def calculate_portfolio_value(portfolio):
+    total_value = 0
+    for crypto, amount in portfolio.items():
+        price = get_crypto_price(crypto)
+        value = price * amount
+        total_value += value
+        print(f"{crypto.upper()}: {amount} units @ ${price:.2f} each = ${value:.2f}")
+    return total_value
+
+# Function to display portfolio details
+def display_portfolio(portfolio):
+    print("\nCurrent Portfolio:")
+    total_value = calculate_portfolio_value(portfolio)
+    print(f"\nTotal Portfolio Value: ${total_value:.2f}")
+
+# Main execution
+if __name__ == "__main__":
+    # Example portfolio (symbol: amount)
+    my_portfolio = {
+        'bitcoin': 0.1,
+        'ethereum': 1.5,
+        'cardano': 1000
+    }
+    
+    display_portfolio(my_portfolio)
