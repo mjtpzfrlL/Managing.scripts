@@ -1,0 +1,90 @@
+class Shop:
+    def __init__(self):
+        self.products = {}
+
+    def add_product(self, name, price, quantity):
+        """Add a new product or update an existing one."""
+        if name in self.products:
+            self.products[name]['quantity'] += quantity
+        else:
+            self.products[name] = {'price': price, 'quantity': quantity}
+        print(f"Product {name} added/updated successfully.")
+
+    def view_products(self):
+        """Display all products."""
+        if not self.products:
+            print("No products available.")
+        else:
+            for name, details in self.products.items():
+                print(f"Product: {name}, Price: {details['price']}, Quantity: {details['quantity']}")
+
+    def update_stock(self, name, quantity):
+        """Update the stock quantity of a product."""
+        if name in self.products:
+            self.products[name]['quantity'] += quantity
+            print(f"Stock updated for {name}. New quantity: {self.products[name]['quantity']}")
+        else:
+            print(f"Product {name} not found.")
+
+    def process_sale(self, name, quantity):
+        """Process the sale of a product."""
+        if name in self.products:
+            if self.products[name]['quantity'] >= quantity:
+                self.products[name]['quantity'] -= quantity
+                total_price = self.products[name]['price'] * quantity
+                print(f"Sold {quantity} units of {name}. Total price: {total_price}")
+            else:
+                print(f"Insufficient stock for {name}. Available quantity: {self.products[name]['quantity']}")
+        else:
+            print(f"Product {name} not found.")
+
+    def manage_shop(self):
+        """Manage the shop activities."""
+        while True:
+            print("\nShop Management System")
+            print("1. Add Product")
+            print("2. View Products")
+            print("3. Update Stock")
+            print("4. Process Sale")
+            print("5. Exit")
+            
+            choice = input("Enter your choice (1-5): ")
+            
+            if choice == '1':
+                name = input("Enter product name: ")
+                try:
+                    price = float(input("Enter product price: "))
+                    quantity = int(input("Enter product quantity: "))
+                    self.add_product(name, price, quantity)
+                except ValueError:
+                    print("Invalid input. Price should be a number and quantity should be an integer.")
+
+            elif choice == '2':
+                self.view_products()
+
+            elif choice == '3':
+                name = input("Enter product name: ")
+                try:
+                    quantity = int(input("Enter quantity to add: "))
+                    self.update_stock(name, quantity)
+                except ValueError:
+                    print("Invalid input. Quantity should be an integer.")
+
+            elif choice == '4':
+                name = input("Enter product name: ")
+                try:
+                    quantity = int(input("Enter quantity to sell: "))
+                    self.process_sale(name, quantity)
+                except ValueError:
+                    print("Invalid input. Quantity should be an integer.")
+
+            elif choice == '5':
+                print("Exiting shop management system.")
+                break
+
+            else:
+                print("Invalid choice. Please enter a number between 1 and 5.")
+
+if __name__ == "__main__":
+    shop = Shop()
+    shop.manage_shop()
