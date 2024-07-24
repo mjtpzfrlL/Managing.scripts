@@ -1,0 +1,118 @@
+class AdminSystem:
+    def __init__(self):
+        self.employees = {}
+        self.meetings = []
+        self.tasks = []
+
+    # Employee Management
+    def add_employee(self, name, position):
+        """Add a new employee to the system."""
+        if name not in self.employees:
+            self.employees[name] = position
+            print(f"Employee {name} added successfully.")
+        else:
+            print(f"Employee {name} already exists.")
+
+    def view_employees(self):
+        """View all employees in the system."""
+        if not self.employees:
+            print("No employees found.")
+        else:
+            for name, position in self.employees.items():
+                print(f"Name: {name}, Position: {position}")
+
+    # Meeting Scheduling
+    def schedule_meeting(self, date, time, agenda):
+        """Schedule a new meeting."""
+        meeting = {'date': date, 'time': time, 'agenda': agenda}
+        self.meetings.append(meeting)
+        print(f"Meeting scheduled on {date} at {time} with agenda: {agenda}")
+
+    def view_meetings(self):
+        """View all scheduled meetings."""
+        if not self.meetings:
+            print("No meetings scheduled.")
+        else:
+            for meeting in self.meetings:
+                print(f"Date: {meeting['date']}, Time: {meeting['time']}, Agenda: {meeting['agenda']}")
+
+    # Task Management
+    def add_task(self, description, due_date):
+        """Add a new task to the system."""
+        task = {'description': description, 'due_date': due_date, 'status': 'Pending'}
+        self.tasks.append(task)
+        print(f"Task added: {description}, due by {due_date}")
+
+    def view_tasks(self):
+        """View all tasks."""
+        if not self.tasks:
+            print("No tasks found.")
+        else:
+            for task in self.tasks:
+                print(f"Description: {task['description']}, Due Date: {task['due_date']}, Status: {task['status']}")
+
+    def update_task_status(self, description, status):
+        """Update the status of a task."""
+        for task in self.tasks:
+            if task['description'] == description:
+                task['status'] = status
+                print(f"Task '{description}' status updated to {status}")
+                return
+        print(f"Task '{description}' not found.")
+
+    # Main Interface
+    def manage_system(self):
+        """Main interface for managing the administrative system."""
+        while True:
+            print("\nAdministrative System")
+            print("1. Add Employee")
+            print("2. View Employees")
+            print("3. Schedule Meeting")
+            print("4. View Meetings")
+            print("5. Add Task")
+            print("6. View Tasks")
+            print("7. Update Task Status")
+            print("8. Exit")
+            
+            choice = input("Enter your choice (1-8): ")
+            
+            if choice == '1':
+                name = input("Enter employee name: ")
+                position = input("Enter employee position: ")
+                self.add_employee(name, position)
+
+            elif choice == '2':
+                self.view_employees()
+
+            elif choice == '3':
+                date = input("Enter meeting date (YYYY-MM-DD): ")
+                time = input("Enter meeting time (HH:MM): ")
+                agenda = input("Enter meeting agenda: ")
+                self.schedule_meeting(date, time, agenda)
+
+            elif choice == '4':
+                self.view_meetings()
+
+            elif choice == '5':
+                description = input("Enter task description: ")
+                due_date = input("Enter task due date (YYYY-MM-DD): ")
+                self.add_task(description, due_date)
+
+            elif choice == '6':
+                self.view_tasks()
+
+            elif choice == '7':
+                description = input("Enter task description to update: ")
+                status = input("Enter new task status (Pending/Completed): ")
+                self.update_task_status(description, status)
+
+            elif choice == '8':
+                print("Exiting administrative system.")
+                break
+
+            else:
+                print("Invalid choice. Please enter a number between 1 and 8.")
+
+if __name__ == "__main__":
+    admin_system = AdminSystem()
+    admin_system.manage_system()
