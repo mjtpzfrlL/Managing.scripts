@@ -1,0 +1,65 @@
+import ast
+import difflib
+import tokenize
+from io import StringIO
+
+def read_file(file_path):
+    """Reads the content of the specified file."""
+    with open(file_path, 'r') as file:
+        return file.read()
+
+def write_file(file_path, content):
+    """Writes the given content to the specified file."""
+    with open(file_path, 'w') as file:
+        file.write(content)
+
+def detect_syntax_errors(code):
+    """Parses the code and returns a SyntaxError if any, otherwise None."""
+    try:
+        ast.parse(code)
+        return None
+    except SyntaxError as e:
+        return e
+
+def suggest_corrections(code, error):
+    """Suggests corrections for the detected syntax error."""
+    lines = code.splitlines()
+    error_line = lines[error.lineno - 1]
+
+    # Attempt to find similar lines in the script as a simple heuristic
+    suggestions = difflib.get_close_matches(error_line, lines, n=1, cutoff=0.6)
+    if suggestions:
+        suggested_line = suggestions[0]
+        commentary = f"# Corrected syntax error at line {error.lineno}: \n# Original: {error_line}\n# Suggestion: {suggested_line}\n"
+        lines[error.lineno - 1] = suggested_line + '\n' + commentary
+        return '\n'.join(lines)
+    return code
+
+def add_commentary(code, error):
+    """Adds a commentary to the code explaining the correction."""
+    commentary = f"# SyntaxError at line {error.lineno}: {error.msg}\n"
+    lines = code.splitlines()
+    lines.insert(error.lineno - 1, commentary)
+    return '\n'.join(lines)
+
+def correct_syntax_errors(file_path):
+    """Detects and corrects syntax errors in the specified file, with commentary."""
+    code = read_file(file_path)
+    error = detect_syntax_errors(code)
+    
+    if error:
+        # Add commentary about the error
+        code_with_commentary = add_commentary(code, error)
+        
+        # Suggest corrections
+        corrected_code = suggest_corrections(code_with_commentary, error)
+        
+        # Write the corrected code back to the file
+        write_file(file_path, corrected_code)
+        print(f"Error detected and corrected at line {error.lineno}")
+    else:
+        print("No syntax errors detected.")
+
+if __name__ == "__main__":
+    file_path = 'your_script.py'  # Replace with the path to your Python script
+    correct_syntax_errors(file_path)
