@@ -1,0 +1,47 @@
+class SpeedChecker:
+    def __init__(self, speed_limit):
+        """
+        Initialize the SpeedChecker with a specified speed limit.
+
+        Parameters:
+        speed_limit (int): The speed limit for the area (in km/h).
+        """
+        self.speed_limit = speed_limit
+
+    def check_speed(self, car_speed):
+        """
+        Check if the car is speeding and return an appropriate message.
+
+        Parameters:
+        car_speed (int): The speed of the car (in km/h).
+
+        Returns:
+        str: A message indicating whether the car is speeding or within the speed limit.
+        """
+        if car_speed > self.speed_limit:
+            return f"Speeding! The car is going {car_speed} km/h in a {self.speed_limit} km/h zone."
+        else:
+            return f"The car is going {car_speed} km/h, which is within the speed limit of {self.speed_limit} km/h."
+
+def main():
+    """
+    Main function to run the speed-checking system.
+
+    Sets a speed limit, creates a SpeedChecker instance, and checks various car speeds.
+    """
+    # Set the speed limit for the area
+    speed_limit = 60  # Speed limit in km/h
+
+    # Initialize the SpeedChecker with the speed limit
+    speed_checker = SpeedChecker(speed_limit)
+
+    # Example speeds to check
+    speeds = [50, 60, 70, 55, 80]
+
+    # Check each speed and print the result
+    for speed in speeds:
+        result = speed_checker.check_speed(speed)
+        print(result)
+
+if __name__ == "__main__":
+    main()
